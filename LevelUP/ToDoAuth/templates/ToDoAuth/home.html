@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать!</h1>
+        {% if user.is_authenticated %}
+            <p>Привет, {{ user.email }}! <a href="{% url 'logout' %}">Выйти</a></p>
+        {% else %}
+            <p><a href="{% url 'login' %}">Войти</a> или <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>
