@@ -12,7 +12,7 @@ class CustomRegisterForm(forms.Form):
     password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': ' Подтвердите пароль'}))
 
     def clean_email(self):
-        email = self.cleaned_data['data']
+        email = self.cleaned_data['email']
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError('Этот email уже зарегистрирован')
         return email

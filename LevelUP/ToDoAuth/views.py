@@ -36,7 +36,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request,f"Добро пожаловать, {user.email}!")
-                return  redirect("base")
+                return  redirect("home")
             else:
                 messages.error(request, 'Неверный email  или пароль.')
     else:
