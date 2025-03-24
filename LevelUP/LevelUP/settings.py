@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ToDoAuth.apps.TodoauthConfig'
+    'todo.apps.TodoConfig',
+    'auth_app.apps.TodoauthConfig',
+    'rest_framework',
+    'corsheaders',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +130,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL='todo.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+}
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+
+DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'user_create': 'auth_app.serializers.CustomUserCreateSerializer',
+        'user': 'auth_app.serializers.UserSerializer',
+        'current_user': 'auth_app.serializers.UserSerializer',
+    },
+}
