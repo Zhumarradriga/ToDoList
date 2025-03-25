@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ToDoAuth.apps.TodoauthConfig'
+    'todo_auth.apps.TodoauthConfig'
 ]
 
 MIDDLEWARE = [
