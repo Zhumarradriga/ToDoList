@@ -2,13 +2,13 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TodoList(models.Model):
-    user=models.ForeignKey('todo_auth.User', on_delete=models.CASCADE)
+    user=models.ForeignKey('todo_users.Users', on_delete=models.CASCADE)
     title=models.CharField(max_length=100)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
     class Meta:
-        dp_table="todo_lists"
+        db_table="Todo_lists"
 
     def __str__(self):
         return self.title
@@ -16,12 +16,12 @@ class TodoList(models.Model):
 class Category(models.Model):
     name=models.CharField(max_length=50)
     is_default=models.BooleanField(default=False)
-    created_by=models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
+    created_by=models.ForeignKey('todo_users.Users', on_delete=models.SET_NULL, null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table='categories'
-        constrains=[
+        db_table='Categories'
+        constraints=[
             models.UniqueConstraint(fields=['name', 'created_by'], name='unique_category_name_per_user')
         ]
 
@@ -42,7 +42,7 @@ class Task(models.Model):
     )
 
     class Meta:
-        db_table='tasks'
+        db_table='Tasks'
 
     def __str__(self):
         return self.title

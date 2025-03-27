@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TodoauthConfig(AppConfig):
+class TodoUsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'todo_auth'
+    name = 'todo_users'
