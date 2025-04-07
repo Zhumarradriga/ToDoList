@@ -3,17 +3,17 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
+
 from .tasks import notify_services_of_new_user
 
-
 class RegisterView(APIView):
-
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
-
+            notify_services_of_new_user.delay(user.id)  # Асинхронно уведомляем другие сервисы
             return Response({
                 'user': serializer.data,
                 'refresh': str(refresh),
