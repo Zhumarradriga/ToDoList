@@ -1,4 +1,3 @@
-# tasks_service/todo_tasks/views.py
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response

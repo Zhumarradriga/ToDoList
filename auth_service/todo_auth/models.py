@@ -3,7 +3,7 @@ from django.db import models
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
-        user = self.model(username=username, email=email)
+        user = self.model(username=username, email=email, is_active=True)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -11,6 +11,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username, email, password=None):
         user = self.create_user(username, email, password)
         user.is_admin = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -22,6 +23,7 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     avatar_url = models.CharField(max_length=255, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     objects = UserManager()
     USERNAME_FIELD = 'username'
