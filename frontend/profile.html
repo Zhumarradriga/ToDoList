@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat Alternates', sans-serif;
+        }
+
+        /* Основной контейнер */
+        .profile-container {
+            position: relative;
+            width: 700px;
+            height: 1080px;
+            background: #F6F1FE;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        /* Шапка профиля */
+        .profile-header {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .avatar {
+            width: 329px;
+            height: 328px;
+            background: #EADDFF;
+            border: 4px solid #52399C;
+            box-shadow: 0px 0px 30px 1px rgba(17, 7, 48, 0.3);
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        /* Блок приветствия */
+        .greeting {
+            position: absolute;
+            top: 436px;
+            width: 100%;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 400;
+            color: #110730;
+        }
+
+        .greeting-line {
+            display: block;
+        }
+
+        /* Прогресс-бар */
+        .progress-section {
+            position: absolute;
+            top: 548px;
+            left: 59px;
+            width: 582px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+        }
+
+        .level-badge {
+            width: 65px;
+            height: 65px;
+            background: #562BD7;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0;
+            z-index: 1;
+            position: relative;
+        }
+
+        .level-number {
+            font-size: 40px;
+            font-weight: 600;
+            color: #F1EBF9;
+            transform: scaleY(-1);
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 42px;
+            background: rgba(96, 56, 233, 0.31);
+            border-radius: 0 45px 45px 0;
+            position: relative;
+            margin-left: -15px;
+            padding-left: 15px;
+        }
+
+        .progress-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        /* Блок характеристик */
+        .stats-section {
+            position: absolute;
+            top: 643px;
+            left: 59px;
+            width: 582px;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat {
+            height: 43px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 40px;
+            white-space: nowrap;
+        }
+
+        .stat-strength {
+            background: rgba(205, 0, 0, 0.85);
+            color: #FFFFFF;
+        }
+
+        .stat-endurance {
+            background: rgba(231, 247, 18, 0.85);
+            color: #110730;
+        }
+
+        .stat-intelligence {
+            background: rgba(46, 31, 243, 0.85);
+            color: #FFFFFF;
+            display: inline-flex;
+        }
+
+        .add-stat {
+            font-size: 24px;
+            font-weight: 500;
+            color: #110730;
+            margin-top: 15px;
+            display: block;
+        }
+
+        .stats-header {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #110730;
+            margin-bottom: 15px;
+        }
+
+        /* Кнопка выхода */
+        .exit-btn {
+            position: absolute;
+            right: 46px;
+            bottom: 43px;
+            font-size: 36px;
+            font-weight: 600;
+            color: #110730;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Прямоугольники для будущих иконок */
+        .icon-placeholder-left {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #110730;
+            border-radius: 8px;
+        }
+
+        .icon-placeholder-right {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #110730;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Плейсхолдеры для иконок -->
+        <div class="icon-placeholder-left"></div>
+        <div class="icon-placeholder-right"></div>
+
+        <!-- Шапка профиля -->
+        <div class="profile-header">
+            <div class="avatar"></div>
+        </div>
+
+        <!-- Приветствие -->
+        <div class="greeting">
+            <span class="greeting-line">Привет,</span>
+            <span class="greeting-line">пользователь!</span>
+        </div>
+
+        <!-- Прогресс-бар -->
+        <div class="progress-section">
+            <div class="level-badge">
+                <span class="level-number">0</span>
+            </div>
+            <div class="progress-bar">
+                <span class="progress-text">0/100</span>
+            </div>
+        </div>
+
+        <!-- Характеристики -->
+        <div class="stats-section">
+            <div class="stats-header">Характеристики</div>
+            <div class="stats-grid">
+                <div class="stats-row">
+                    <div class="stat stat-strength">Сила 0</div>
+                    <div class="stat stat-endurance">Выносливость 0</div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat stat-intelligence">Интеллект 0</div>
+                </div>
+            </div>
+
+            <div class="add-stat">+ Добавить характеристику</div>
+        </div>
+
+        <!-- Кнопка выхода -->
+        <button class="exit-btn">Выход</button>
+    </div>
+</body>
+</html>

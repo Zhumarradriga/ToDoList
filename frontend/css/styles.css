@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f1fe;
+  font-family: 'Montserrat Alternates', sans-serif;
+  color: #4e27c0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.logo {
+  font-size: 50px;
+  font-weight: 600;
+  margin-bottom: 60px; /* Увеличили отступ для логотипа */
+  font-weight: bold;
+}
+
+.login-box {
+  width: 622px;
+  text-align: left;
+  
+}
+
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px; /* Увеличили отступ под заголовком */
+  width: 100%;
+}
+
+.login-header h2 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.register-link {
+  color: #4e27c0;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  background-color: #c9bee6;
+  border: none;
+  padding: 20px;
+  width: 94%; /* Заставляем кнопку занимать всю доступную ширину */
+  margin-bottom: 30px; /* Увеличили отступ между полями ввода */
+  font-size: 24px;
+  font-weight: bold;
+  color: #75669c;
+}
+
+input::placeholder {
+  color: #75669c;
+  opacity: 1;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 30px; /* Увеличили отступ для текста "Забыли пароль?" */
+  width: 100%;
+}
+
+.forgot-password a {
+  font-size: 24px;
+  color: #4e27c0;
+  text-decoration: none;
+}
+
+button {
+  background-color: #4e27c0;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  width: 100%; /* Заставляем кнопку занимать всю доступную ширину */
+  max-width: 248px; /* Максимальная ширина кнопки */
+  margin: 0 auto; /* Центрируем кнопку */
+  margin-top: 30px; /* Добавили отступ сверху для кнопки */
+  border-radius: 5px; /* Добавим скругления для эстетики */
+}
+
+.error-message {
+    color: #ff4444;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}

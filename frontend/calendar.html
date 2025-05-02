@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <!-- Базовые настройки документа -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp - Органайзер задач</title>
+    <!-- Подключение шрифтов -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* === ОБЩИЕ СТИЛИ === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat Alternates', sans-serif;
+            background-color: #F6F1FE;
+            color: #1D0C51;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 241px;
+        }
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+        
+        /* === ШАПКА САЙТА === */
+        header {
+            padding: 20px 0;
+            position: relative;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #1D0C51;
+            font-size: 26px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+        .nav-menu a.active {
+            font-weight: 600;
+        }
+        .nav-divider {
+            color: #1D0C51;
+            font-size: 26px;
+        }
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            font-weight: 600;
+            color: #4E27C0;
+            letter-spacing: -0.1em;
+        }
+        
+        /* === ПАНЕЛЬ ПОЛЬЗОВАТЕЛЯ === */
+        .user-panel {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-greeting {
+            font-size: 32px;
+            font-weight: 300;
+            text-align: left;
+        }
+        .progress-container {
+            margin-top: 10px;
+        }
+        .progress-bar {
+            width: 251px;
+            height: 21px;
+            background: rgba(96, 56, 233, 0.31);
+            border-radius: 45px;
+            position: relative;
+        }
+        .progress-level {
+            position: absolute;
+            width: 41px;
+            height: 42px;
+            background: #562BD7;
+            border-radius: 15px;
+            top: -10px;
+            left: 0;
+        }
+        .progress-text {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            font-size: 16px;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        .user-avatar {
+            width: 124px;
+            height: 124px;
+            border-radius: 50%;
+            background: #EADDFF;
+            border: 4px solid #52399C;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-icon {
+            width: 70px;
+            height: 28px;
+            background: #4F378A;
+        }
+        
+        /* === ДАТА === */
+        .date-container {
+            margin: 30px 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .tasks-today {
+            font-family: 'Montserrat Alternates';
+            font-weight: 400;
+            font-size: 24px;
+            color: #110730;
+        }
+        .current-date {
+            font-family: 'Montserrat Alternates';
+            font-weight: 700;
+            font-size: 32px;
+            color: #1D0C51;
+        }
+        
+        /* === КАЛЕНДАРЬ === */
+        .calendar-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(111, 105, 207, 0.2);
+            overflow: hidden;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background: #F6F1FE;
+            border-bottom: 1px solid #EEEDFF;
+            position: relative;
+        }
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .month-title {
+            font-family: 'Montserrat Alternates';
+            font-weight: 500;
+            font-size: 24px;
+            color: #562BD7;
+            text-align: center;
+        }
+        .nav-button {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .nav-button:hover {
+            background: rgba(86, 43, 215, 0.1);
+        }
+        .nav-button::after {
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            border: 2px solid #562BD7;
+            border-left: none;
+            border-bottom: none;
+        }
+        .prev-month::after {
+            transform: rotate(-135deg);
+            margin-right: 2px;
+        }
+        .next-month {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .next-month::after {
+            transform: rotate(45deg);
+            margin-left: 2px;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #FFFFFF;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #EEEDFF;
+        }
+        .weekday {
+            font-family: 'Futura PT';
+            font-weight: 450;
+            font-size: 18px;
+            color: #866FE2;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .day {
+            min-height: 80px;
+            padding: 8px;
+            border-right: 1px solid #EEEDFF;
+            border-bottom: 1px solid #EEEDFF;
+            position: relative;
+        }
+        .day:nth-child(7n) {
+            border-right: none;
+        }
+        .day-number {
+            font-family: 'Montserrat Alternates';
+            font-weight: 400;
+            font-size: 16px;
+            color: #562BD7;
+        }
+        .other-month-day {
+            color: #BCACFD !important;
+        }
+        .current-day {
+            background: rgba(86, 43, 215, 0.05);
+        }
+        .current-day .day-number {
+            font-weight: 600;
+            color: #4E27C0;
+        }
+        
+        /* === ПОДВАЛ === */
+        footer {
+            background: linear-gradient(0deg, rgba(17, 7, 48, 0.9) 7%, rgba(52, 21, 142, 0.9) 100%);
+            color: white;
+            padding: 40px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 241px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 140px;
+        }
+        .footer-info {
+            max-width: 400px;
+        }
+        .footer-logo {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -0.1em;
+            color: #D9D9D9;
+            margin-bottom: 20px;
+        }
+        .footer-text {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .contact-icon {
+            width: 30px;
+            height: 30px;
+            background: #F9DEDC;
+            flex-shrink: 0;
+        }
+        .social-media {
+            text-align: right;
+        }
+        .social-title {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 30px;
+        }
+        .social-icon {
+            width: 65px;
+            height: 65px;
+            border: 4px solid #B3B3B3;
+            border-radius: 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        /* === АДАПТИВНОСТЬ === */
+        @media (max-width: 1600px) {
+            .container {
+                padding: 0 40px;
+            }
+            .footer-content {
+                padding: 0 40px;
+            }
+        }
+        @media (max-width: 1200px) {
+            .logo {
+                position: static;
+                transform: none;
+                order: -1;
+                margin-bottom: 20px;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .user-panel {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+            .progress-container {
+                margin-top: 20px;
+            }
+            .calendar-wrapper {
+                max-width: 100%;
+            }
+            .day {
+                min-height: 60px;
+            }
+        }
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+                padding: 40px;
+            }
+            .social-media {
+                text-align: left;
+            }
+            .social-icons {
+                justify-content: flex-start;
+            }
+            .date-container {
+                margin: 20px 0 15px;
+            }
+            .current-date {
+                font-size: 28px;
+            }
+            .tasks-today {
+                font-size: 20px;
+            }
+            .month-title {
+                font-size: 20px;
+            }
+            .weekday {
+                font-size: 16px;
+            }
+            .day-number {
+                font-size: 14px;
+            }
+            .month-navigation {
+                gap: 10px;
+                left: 10px;
+            }
+            .next-month {
+                right: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .day {
+                min-height: 50px;
+                padding: 5px;
+            }
+            .day-number {
+                font-size: 12px;
+            }
+            .month-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <nav class="nav-menu">
+                    <a href="#" class="active">Главная</a>
+                    <span class="nav-divider">|</span>
+                    <a href="#">Задачи</a>
+                    <span class="nav-divider">|</span>
+                    <a href="#">Календарь</a>
+                </nav>
+                <div class="logo">LevelUp</div>
+                <div class="user-panel">
+                    <div class="user-info">
+                        <div class="user-greeting">Привет, <br> пользователь!</div> 
+                        <div class="progress-container">
+                            <div class="progress-text">0/100</div>
+                            <div class="progress-bar">
+                                <div class="progress-level"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-avatar">
+                        <div class="avatar-icon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Основное содержимое -->
+    <main class="container">
+        <!-- Блок с датой -->
+        <div class="date-container">
+            <div class="current-date">5 апреля</div>
+            <div class="tasks-today">0 задач на сегодня</div>
+        </div>
+        
+        <!-- Календарь -->
+        <div class="calendar-wrapper">
+            <!-- Шапка календаря с месяцем -->
+            <div class="calendar-header">
+                <div class="month-navigation">
+                    <div class="nav-button prev-month"></div>
+                </div>
+                <div class="month-title">Апрель</div>
+                <div class="nav-button next-month"></div>
+            </div>
+            
+            <!-- Дни недели -->
+            <div class="weekdays">
+                <div class="weekday">Пн</div>
+                <div class="weekday">Вт</div>
+                <div class="weekday">Ср</div>
+                <div class="weekday">Чт</div>
+                <div class="weekday">Пт</div>
+                <div class="weekday">Сб</div>
+                <div class="weekday">Вс</div>
+            </div>
+            
+            <!-- Сетка календаря -->
+            <div class="calendar-grid">
+                <!-- 1 неделя -->
+                <div class="day">
+                    <span class="day-number other-month-day">31</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">1</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">2</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">3</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">4</span>
+                </div>
+                <div class="day current-day">
+                    <span class="day-number">5</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">6</span>
+                </div>
+                
+                <!-- 2 неделя -->
+                <div class="day">
+                    <span class="day-number">7</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">8</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">9</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">10</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">11</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">12</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">13</span>
+                </div>
+                
+                <!-- 3 неделя -->
+                <div class="day">
+                    <span class="day-number">14</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">15</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">16</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">17</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">18</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">19</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">20</span>
+                </div>
+                
+                <!-- 4 неделя -->
+                <div class="day">
+                    <span class="day-number">21</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">22</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">23</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">24</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">25</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">26</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">27</span>
+                </div>
+                
+                <!-- 5 неделя -->
+                <div class="day">
+                    <span class="day-number">28</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">29</span>
+                </div>
+                <div class="day">
+                    <span class="day-number">30</span>
+                </div>
+                <div class="day">
+                    <span class="day-number other-month-day">1</span>
+                </div>
+                <div class="day">
+                    <span class="day-number other-month-day">2</span>
+                </div>
+                <div class="day">
+                    <span class="day-number other-month-day">3</span>
+                </div>
+                <div class="day">
+                    <span class="day-number other-month-day">4</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">LevelUp</div>
+                <p class="footer-text">Этот веб-сайт создан, чтобы чуточку облегчить вашу жизнь!</p>
+            </div>
+            <div class="contacts">
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <span>+7 (382) 260-61-00</span>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <span>+7 (923) 501-59-98</span>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <span>oaa21@tpu.ru</span>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <span>Россия, 634034, г.Томск, Советская ул., 84/3, ауд.107</span>
+                </div>
+            </div>
+            <div class="social-media">
+                <h3 class="social-title">Свяжитесь с нами через социальные сети</h3>
+                <div class="social-icons">
+                    <div class="social-icon" style="background-image: url('instagram-icon.png')"></div>
+                    <div class="social-icon" style="background-image: url('other-icon.png')"></div>
+                    <div class="social-icon" style="background-image: url('vk-icon.png')"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
