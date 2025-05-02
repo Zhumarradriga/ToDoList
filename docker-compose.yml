@@ -11,8 +11,16 @@ services:
       - tasks_db
       - stats_db
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - authservice
+      - tasksservice
+      - statsservice
 
-  auth_service:
+  authservice:
     build: ./auth_service
     ports:
       - "8000:8000"
@@ -21,8 +29,10 @@ services:
     depends_on:
       - auth_db
       - redis
+    volumes:
+      - ./logs:/app/logs
 
-  tasks_service:
+  tasksservice:
     build: ./tasks_service
     ports:
       - "8001:8001"
@@ -30,8 +40,11 @@ services:
       - tasks_service/.env
     depends_on:
       - tasks_db
+      - authservice
+    volumes:
+      - ./logs:/app/logs
 
-  stats_service:
+  statsservice:
     build: ./stats_service
     ports:
       - "8002:8002"
@@ -40,6 +53,9 @@ services:
     depends_on:
       - stats_db
       - redis
+      - authservice
+    volumes:
+      - ./logs:/app/logs
 
   auth_db:
     image: postgres:15
@@ -73,7 +89,7 @@ services:
     ports:
       - "6379:6379"
 
-  auth_service_worker:
+  authserviceworker:
     build: ./auth_service
     command: celery -A auth_service worker --loglevel=info
     env_file:
@@ -81,8 +97,10 @@ services:
     depends_on:
       - redis
       - auth_db
+    volumes:
+      - ./logs:/app/logs
 
-  stats_service_worker:
+  statsserviceworker:
     build: ./stats_service
     command: celery -A stats_service worker --loglevel=info
     env_file:
@@ -90,6 +108,8 @@ services:
     depends_on:
       - redis
       - stats_db
+    volumes:
+      - ./logs:/app/logs
   
 
 volumes:
