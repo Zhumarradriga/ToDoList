@@ -19,10 +19,17 @@ class StatSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Item
-        fields = ['id', 'name', 'description', 'type', 'price', 'is_limited', 'quantity', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'type', 'price', 'is_limited', 'quantity', 'is_active', 'image', 'image_url', 'created_at', 'updated_at']
         read_only_fields = ('created_at', 'updated_at')
+
+    def get_image_url(self, obj):
+        if obj.image:
+            return self.context['request'].build_absolute_uri(obj.image.url)
+        return None
 
 
 class ShopSerializer(serializers.ModelSerializer):

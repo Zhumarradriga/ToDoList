@@ -52,6 +52,7 @@ class Item(models.Model):
     is_limited = models.BooleanField(default=False)
     quantity = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='items/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

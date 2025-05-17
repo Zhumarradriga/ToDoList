@@ -23,7 +23,9 @@ class User(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     avatar_url = models.CharField(max_length=255, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
+    is_email_confirmed = models.BooleanField(default=False)
+    email_confirmation_token = models.CharField(max_length=100, null=True, blank=True)
 
     objects = UserManager()
     USERNAME_FIELD = 'username'
